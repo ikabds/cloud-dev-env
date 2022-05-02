@@ -144,9 +144,7 @@ resource "aws_cloud9_environment_ec2" "this" {
     aws_nat_gateway.this
   ]
 
-  tags = merge({
-    Name = var.environment_name
-  }, var.tags)
+  tags = var.tags
 }
 
 data "aws_instance" "this" {
@@ -180,6 +178,8 @@ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook \
 -e ansible_python_interpreter=python3 \
 ${join(" ", [for tool in keys(var.versions) : format("-e %s='%s'", tool, var.versions[tool])])} \
 ${join(" ", [for conf in keys(var.configs) : format("-e %s='%s'", conf, var.configs[conf])])} \
+${join(" ", [for secret in keys(var.secrets) : format("-e %s='%s'", secret, var.secrets[secret])])} \
+-e "{\"repositories\": ${jsonencode(var.repositories)}}" \
 -e aws_region=${var.aws_region} \
 -e ansible_aws_ssm_bucket_name=${local.ansible_aws_ssm_bucket_name} \
 ansible/playbook.yml

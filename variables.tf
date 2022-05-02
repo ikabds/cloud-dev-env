@@ -33,10 +33,24 @@ variable "versions" {
 }
 
 variable "configs" {
-  type        = map(string)
+  type        = map(any)
   description = "Configs of tools"
   default = {
     public_key_path = "~/.ssh/id_rsa.pub"
+  }
+}
+
+variable "repositories" {
+  type        = list(any)
+  description = "URL of repositories to fetch using GitHub token (without https://)"
+  default     = []
+}
+
+variable "secrets" {
+  type        = map(any)
+  description = "Secrets for tools"
+  default = {
+    github_token = ""
   }
 }
 
