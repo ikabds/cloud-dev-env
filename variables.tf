@@ -36,7 +36,7 @@ variable "configs" {
   type        = map(any)
   description = "Configs of tools"
   default = {
-    public_key_path = "~/.ssh/id_rsa.pub"
+    public_key = "" # Paste Public SSH Key as variable
   }
 }
 
