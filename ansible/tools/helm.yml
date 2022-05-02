@@ -1,0 +1,21 @@
+- name: Install dependencies for unarchive module
+  become: true
+  ansible.builtin.package:
+    name:
+      - tar
+      - unzip
+      - gzip
+    state: present
+
+- name: Install Helm
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: yes
+    src: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz" 
+    include: linux-amd64/helm
+    dest: /usr/local/bin
+    extra_opts:
+      - '--strip-components=1'
+    owner: root
+    group: root
+    mode: '0755'

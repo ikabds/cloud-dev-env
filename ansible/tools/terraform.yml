@@ -1,0 +1,19 @@
+- name: Install dependencies for unarchive module
+  become: true
+  ansible.builtin.package:
+    name:
+      - tar
+      - unzip
+      - gzip
+    state: present
+
+- name: Install Terraform
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: yes
+    src: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip" 
+    include: terraform
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: '0755'

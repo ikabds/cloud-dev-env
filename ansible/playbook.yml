@@ -1,8 +1,29 @@
-- name: Install a Nginx Package
+# Bugs. SSM is available only after 24 hours
+# https://github.com/ansible-collections/community.aws/issues/637
+
+- name: Install tools
+  hosts: "all"
+  gather_facts: false
   vars:
     ansible_connection: aws_ssm
-    ansible_aws_ssm_bucket_name: nameofthebucket
     ansible_aws_ssm_region: "{{ aws_region }}"
+    ansible_aws_ssm_bucket_name: "{{ ansible_aws_ssm_bucket_name }}"
+    region: "{{ aws_region }}"
   tasks:
-    - name: Test shell command
-      ansible.builtin.shell: whoami
+    - name: Get tools list from tools folder
+      find:
+        paths: "{{ playbook_dir }}/tools"
+        patterns: '*.yml'
+      delegate_to: 127.0.0.1
+      register: tools_list
+      vars: 
+        ansible_connection: local
+
+    - set_fact:
+        tools: "{{ tools_list.files | map(attribute='path') | list }}"
+      vars: 
+        ansible_connection: local
+
+    - name: Include tools
+      include: "{{ item }}"
+      loop: "{{ tools }}"

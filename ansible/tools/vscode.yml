@@ -1,0 +1,18 @@
+# Connect VS Code to Cloud9 using SSM
+# https://aws.amazon.com/blogs/architecture/field-notes-use-aws-cloud9-to-power-your-visual-studio-code-ide/
+# More info: https://github.com/aws/aws-toolkit-vscode/issues/941
+
+# Add this to ~/.ssh/config
+# Host i-xzyyxzzxyyxzzxy.PROFILE_NAME.REGION_NAME
+#     User ec2-user
+#     IdentityFile ~/.ssh/id_rsa
+#     ProxyCommand bash -c "aws ssm start-session --target $(echo %h|cut -d'.' -f1) --profile $(echo %h|/usr/bin/cut -d'.' -f2) --region $(echo %h|/usr/bin/cut -d'.' -f3) --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+#
+# If socket long name error - change Host * session to
+# ControlPath  ~/.ssh/sockets/%C
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: ec2-user
+    state: present
+    key: "{{ lookup('file', public_key_path ) }}"

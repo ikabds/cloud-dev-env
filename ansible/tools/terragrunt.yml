@@ -1,0 +1,8 @@
+- name: Install Terragrunt
+  become: true
+  get_url:
+    url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ terragrunt_version }}/terragrunt_linux_amd64"
+    dest: /usr/local/bin/terragrunt
+    owner: root
+    group: root
+    mode: '0755'
