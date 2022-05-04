@@ -1,0 +1,15 @@
+{
+    "aws_region": "eu-central-1",
+    "versions": {
+        "helm_version": "3.8.2",
+        "kubectl_version": "1.23.6",
+        "terraform_version": "1.1.9",
+        "terragrunt_version": "0.36.9"
+    },
+    "configs": {
+        "public_key": "ssh-rsa YOUPUBLICKEY email@example.com"
+    },
+    "repositories": [
+        "github.com/IKabdyushev/cloud-dev-env.git"
+    ]
+}

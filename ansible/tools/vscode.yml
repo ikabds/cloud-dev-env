@@ -16,3 +16,11 @@
     user: ec2-user
     state: present
     key: "{{ public_key }}"
+
+- name: Copy script to prevent EC2 from shutdown during VS Code session
+  ansible.builtin.copy:
+    src: ../files/stop-if-inactive.sh
+    dest: /home/ec2-user/.c9/stop-if-inactive.sh
+    owner: root
+    group: root
+    mode: '0755'
