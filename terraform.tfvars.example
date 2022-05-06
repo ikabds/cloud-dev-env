@@ -10,6 +10,6 @@
         "public_key": "ssh-rsa YOUPUBLICKEY email@example.com"
     },
     "repositories": [
-        "github.com/IKabdyushev/cloud-dev-env.git"
+        "github.com/IKabdyushev/cloud-dev-env"
     ]
 }
