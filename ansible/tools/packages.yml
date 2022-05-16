@@ -1,6 +1,17 @@
+---
+- name: Create the YUM repository (RedHat)
+  yum_repository:
+    name: "azure-cli"
+    description: "Microsoft Azure CLI"
+    baseurl: "https://packages.microsoft.com/yumrepos/azure-cli"
+    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
+    gpgcheck: yes
+    enabled: yes
+
 - name: Install custom packages
   become: true
   ansible.builtin.package:
     name:
       - jq
+      - azure-cli
     state: present
