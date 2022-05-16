@@ -161,7 +161,8 @@ resource "null_resource" "ansible" {
     { for yml in fileset(path.module, "ansible/tools/**.yml") : yml => sha256(file(yml)) },
     {
       plabook_sha = sha256(file("ansible/playbook.yml")),
-      instance_id = data.aws_instance.this.id
+      instance_id = data.aws_instance.this.id,
+      vars        = sha256(file("terraform.tfvars.json"))
 
     },
     var.versions

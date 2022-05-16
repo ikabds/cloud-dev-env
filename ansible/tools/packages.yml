@@ -1,0 +1,6 @@
+- name: Install custom packages
+  become: true
+  ansible.builtin.package:
+    name:
+      - jq
+    state: present
