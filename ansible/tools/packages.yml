@@ -1,17 +1,40 @@
 ---
-- name: Create the YUM repository (RedHat)
-  yum_repository:
-    name: "azure-cli"
-    description: "Microsoft Azure CLI"
-    baseurl: "https://packages.microsoft.com/yumrepos/azure-cli"
-    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
-    gpgcheck: yes
-    enabled: yes
-
-- name: Install custom packages
+- name: Install amazon-linux-extras
   become: true
   ansible.builtin.package:
     name:
+      - amazon-linux-extras
       - jq
-      - azure-cli
     state: present
+
+- name: Install amazon-linux-extras
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3.8
+    state: present
+
+- name: Create a symbolic link
+  become: true
+  ansible.builtin.file:
+    src: /usr/bin/python3.8
+    dest: /usr/bin/python3
+    force: yes
+    owner: root
+    group: root
+    state: link
+
+- name: Uninstall default python3
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3.x86_64
+    state: absent
+    
+- name: Install cffi python package
+  pip:
+    executable: pip3
+    name: 
+      - cffi
+      - twine
+      - az-cli
