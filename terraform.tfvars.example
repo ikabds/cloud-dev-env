@@ -7,7 +7,8 @@
         "terragrunt_version": "0.36.9"
     },
     "configs": {
-        "public_key": "ssh-rsa YOUPUBLICKEY email@example.com"
+        "public_key": "ssh-rsa YOUPUBLICKEY email@example.com",
+        "ebs_disk_size": 200
     },
     "repositories": [
         "github.com/IKabdyushev/cloud-dev-env"
