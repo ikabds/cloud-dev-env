@@ -92,6 +92,8 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_iam_role" "ssm" {
+  count = var.skip_service_role_creation ? 0 : 1
+
   name = "AWSCloud9SSMAccessRole"
   path = "/service-role/"
 
@@ -123,16 +125,18 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "cloud9" {
+  count = var.skip_instance_profile_creation ? 0 : 1
+
   name = "AWSCloud9SSMInstanceProfile"
   path = "/cloud9/"
-  role = aws_iam_role.ssm.name
+  role = var.skip_service_role_creation ? "AWSCloud9SSMAccessRole" : aws_iam_role.ssm[0].name
   tags = merge({
     Name = var.environment_name
   }, var.tags)
 }
 
 resource "aws_cloud9_environment_ec2" "this" {
-  instance_type               = "t3.small"
+  instance_type               = var.instance_type
   name                        = var.environment_name
   image_id                    = "amazonlinux-2-x86_64"
   subnet_id                   = aws_subnet.private.id
@@ -170,14 +174,16 @@ resource "null_resource" "ansible" {
 
   provisioner "local-exec" {
     command = <<EOF
-OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook \
+OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES \
+ANSIBLE_KEEP_REMOTE_FILES=1 \
+ansible-playbook \
 -i "${data.aws_instance.this.id}," \
 -e ansible_python_interpreter=python3 \
 ${join(" ", [for tool in keys(var.versions) : format("-e \"%s='%s'\"", tool, var.versions[tool])])} \
 ${join(" ", [for conf in keys(var.configs) : format("-e \"%s='%s'\"", conf, var.configs[conf])])} \
 ${join(" ", [for secret in keys(var.secrets) : format("-e \"%s='%s'\"", secret, var.secrets[secret])])} \
 -e "{\"repositories\": ${jsonencode(var.repositories)}}" \
--e aws_region=${var.aws_region} \
+-e ansible_aws_ssm_region=${var.aws_region} \
 -e ansible_aws_ssm_bucket_name=${local.ansible_aws_ssm_bucket_name} \
 ansible/playbook.yml
 EOF

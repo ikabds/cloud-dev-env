@@ -9,6 +9,24 @@ variable "environment_name" {
   default     = "cloud-dev-env"
 }
 
+variable "skip_service_role_creation" {
+  type        = bool
+  description = "Skip creation of cloud9 role. Useful if create multiple environments on same account"
+  default     = false
+}
+
+variable "skip_instance_profile_creation" {
+  type        = bool
+  description = "Skip creation of cloud9 role. Useful if create multiple environments on same account"
+  default     = false
+}
+
+variable "instance_type" {
+  type        = string
+  description = "Instance type of EC2 instance"
+  default     = "t3.small"
+}
+
 variable "existing_s3_bucket_name" {
   type        = string
   description = "In not empty use existing S3 bucket for SSM. Recommended as ansible has bug with S3 unavailable though SSM first 24 hours."
