@@ -5,6 +5,7 @@
     name:
       - amazon-linux-extras
       - jq
+      - tmux
     state: present
 
 - command: amazon-linux-extras enable python3.8
