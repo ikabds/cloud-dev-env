@@ -1,0 +1,23 @@
+- name: Copy script to extend EBS volume size
+  ansible.builtin.copy:
+    src: ../files/ebs-resize.sh
+    dest: /home/ec2-user/.c9/ebs-resize.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Resize EBS disk
+  become: yes
+  become_user: ec2-user
+  ansible.builtin.shell: 
+    export AWS_ACCESS_KEY_ID="{{ aws_access_key_id }}" && \
+    export AWS_SECRET_ACCESS_KEY="{{ aws_secret_access_key }}" && \
+    export AWS_SESSION_TOKEN="{{ aws_session_token }}" && \
+    export AWS_REGION="{{ aws_region }}" && \
+    /home/ec2-user/.c9/ebs-resize.sh {{ ebs_disk_size }}
+  args:
+    executable: /bin/bash
+    
+    
+    
+    

@@ -6,6 +6,7 @@
   gather_facts: false
   vars:
     ansible_connection: aws_ssm
+    ansible_aws_ssm_region: "{{ aws_region }}"
   tasks:
     - name: Get tools list from tools folder
       find:

@@ -7,14 +7,24 @@
       - jq
     state: present
 
-- name: Install amazon-linux-extras
+- command: amazon-linux-extras enable python3.8
+
+- name: Install python3.8
   become: true
-  ansible.builtin.package:
+  ansible.builtin.yum:
     name:
       - python3.8
     state: present
+    update_cache: yes
 
-- name: Create a symbolic link
+- name: Uninstall default python3
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3.x86_64
+    state: absent
+
+- name: Create a symbolic link python
   become: true
   ansible.builtin.file:
     src: /usr/bin/python3.8
@@ -24,12 +34,15 @@
     group: root
     state: link
 
-- name: Uninstall default python3
+- name: Create a symbolic link python
   become: true
-  ansible.builtin.package:
-    name:
-      - python3.x86_64
-    state: absent
+  ansible.builtin.file:
+    src: /usr/bin/pip3.8
+    dest: /usr/bin/pip3
+    force: yes
+    owner: root
+    group: root
+    state: link
     
 - name: Install cffi python package
   pip:

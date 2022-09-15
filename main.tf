@@ -183,7 +183,7 @@ ${join(" ", [for tool in keys(var.versions) : format("-e \"%s='%s'\"", tool, var
 ${join(" ", [for conf in keys(var.configs) : format("-e \"%s='%s'\"", conf, var.configs[conf])])} \
 ${join(" ", [for secret in keys(var.secrets) : format("-e \"%s='%s'\"", secret, var.secrets[secret])])} \
 -e "{\"repositories\": ${jsonencode(var.repositories)}}" \
--e ansible_aws_ssm_region=${var.aws_region} \
+-e aws_region=${var.aws_region} \
 -e ansible_aws_ssm_bucket_name=${local.ansible_aws_ssm_bucket_name} \
 ansible/playbook.yml
 EOF
