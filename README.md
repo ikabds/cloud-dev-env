@@ -11,9 +11,14 @@ Install on you local machine following tools:
 pip3 install boto3
 ansible-galaxy collection install community.aws
 ansible-galaxy collection install ansible.posix
+ansible-galaxy collection install kubernetes.core
 ```
 4) Install session-manager plugin: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
 
+## Consideration
+Please, consider using existing S3 bucket for SSM commands if you want to avoid bug with newly created buckets, described here: https://github.com/ansible-collections/community.aws/issues/637
+
+Set "existing_s3_bucket_name" in terraform.tfvars.json
 
 ## Run with docker
 You can build docker image and run installation from Docker container:

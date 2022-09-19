@@ -1,0 +1,7 @@
+---
+- name: Install tmux
+  become: true
+  ansible.builtin.package:
+    name:
+      - tmux
+    state: present

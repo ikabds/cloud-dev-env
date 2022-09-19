@@ -4,8 +4,6 @@
   ansible.builtin.package:
     name:
       - amazon-linux-extras
-      - jq
-      - tmux
     state: present
 
 - command: amazon-linux-extras enable python3.8
@@ -25,7 +23,7 @@
       - python3.x86_64
     state: absent
 
-- name: Create a symbolic link python
+- name: Create a symbolic link python3
   become: true
   ansible.builtin.file:
     src: /usr/bin/python3.8
@@ -35,7 +33,7 @@
     group: root
     state: link
 
-- name: Create a symbolic link python
+- name: Create a symbolic link pip3
   become: true
   ansible.builtin.file:
     src: /usr/bin/pip3.8

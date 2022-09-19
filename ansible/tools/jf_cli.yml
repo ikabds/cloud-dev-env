@@ -1,0 +1,16 @@
+- name: Add repository of JFrog
+  ansible.builtin.yum_repository:
+    name: jf
+    description: JF Cli
+    baseurl: https://releases.jfrog.io/artifactory/jfrog-rpms
+
+- name: Import JFrog key from a file
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key
+
+- name: Install jf CLI
+  become: true
+  ansible.builtin.package:
+    name: jfrog-cli-v2-jf
+    state: present

@@ -1,0 +1,12 @@
+- name: Install Helm plugin 
+  become: yes
+  become_user: ec2-user
+  kubernetes.core.helm_plugin:
+    plugin_version: "{{ item.version }}"
+    plugin_path: "{{ item.path }}"
+    state: present
+    binary_path: /usr/local/bin/helm
+  with_items:
+    - { path: https://github.com/aslafy-z/helm-git, version: v0.11.2 }
+    - { path: https://github.com/databus23/helm-diff, version: v3.5.0 }
+    - { path: https://github.com/jkroepke/helm-secrets, version: v3.15.0 }

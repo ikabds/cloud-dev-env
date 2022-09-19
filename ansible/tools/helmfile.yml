@@ -1,0 +1,19 @@
+- name: Install dependencies for unarchive module
+  become: true
+  ansible.builtin.package:
+    name:
+      - tar
+      - unzip
+      - gzip
+    state: present
+
+- name: Install Helmfile
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: yes
+    src: "https://github.com/helmfile/helmfile/releases/download/v{{ helmfile_version }}/helmfile_{{ helmfile_version }}_linux_amd64.tar.gz" 
+    include: helmfile
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: '0755'
