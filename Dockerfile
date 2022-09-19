@@ -6,12 +6,14 @@ RUN pip3 install ansible boto3 && \
     ansible-galaxy collection install community.aws && \
     ansible-galaxy collection install ansible.posix && \
     ansible-galaxy collection install kubernetes.core && \
-    curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o /tmp/terraform.zip && \
+    curl -v https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip -o /tmp/terraform.zip && \
     unzip /tmp/terraform.zip -d /usr/local/bin && \
     chmod 755 /usr/local/bin/terraform && \
-    curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" && \
-    dpkg -i session-manager-plugin.deb
-
+    if [ "$TARGETARCH" = "amd64" ]; then \
+    curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+    curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_arm64/session-manager-plugin.deb" -o "session-manager-plugin.deb"; \
+    fi && dpkg -i session-manager-plugin.deb
 
 WORKDIR /terraform
 

@@ -66,10 +66,7 @@ variable "repositories" {
 
 variable "secrets" {
   type        = map(any)
-  description = "Secrets for tools"
-  default = {
-    github_token = ""
-  }
+  description = "Secrets for provider.tf and tools"
 }
 
 variable "tags" {

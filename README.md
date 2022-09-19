@@ -21,13 +21,10 @@ Please, consider using existing S3 bucket for SSM commands if you want to avoid 
 Set "existing_s3_bucket_name" in terraform.tfvars.json
 
 ## Run with docker
-You can build docker image and run installation from Docker container:
+Fill the required `terraform.tfvars.json` and `secrets.auto.tfvars.json` files.
+Then you can build docker image and run installation from Docker container:
 ```
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_SESSION_TOKEN=
-
-docker build -t cloud-env-dev .
-docker run -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -it -v "$(pwd)":/terraform cloud-env-dev init
-docker run -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -it -v "$(pwd)":/terraform cloud-env-dev apply
+docker build --build-arg TARGETARCH=$(arch) -t cloud-env-dev .
+docker run -it -v "$(pwd)":/terraform cloud-env-dev init
+docker run -it -v "$(pwd)":/terraform cloud-env-dev apply
 ```
