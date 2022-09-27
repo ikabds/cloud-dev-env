@@ -7,6 +7,10 @@
   vars:
     ansible_connection: aws_ssm
     ansible_aws_ssm_region: "{{ aws_region }}"
+    ansible_aws_ssm_access_key_id: "{{ aws_access_key_id }}"
+    ansible_aws_ssm_secret_access_key: "{{ aws_secret_access_key }}"
+    ansible_aws_ssm_session_token: "{{ aws_session_token }}"
+
   tasks:
     - name: Get tools list from tools folder
       find:

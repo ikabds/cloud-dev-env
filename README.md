@@ -21,7 +21,8 @@ Please, consider using existing S3 bucket for SSM commands if you want to avoid 
 Set "existing_s3_bucket_name" in terraform.tfvars.json
 
 ## Run with docker
-Fill the required `terraform.tfvars.json` and `secrets.auto.tfvars.json` files.
+Fill the required `terraform.tfvars.json` and `secrets.auto.tfvars.json` files. Note: possible bug in new community modules version: https://github.com/ansible-collections/community.aws/issues/1413
+
 Then you can build docker image and run installation from Docker container:
 ```
 docker build --build-arg TARGETARCH=$(arch) -t cloud-env-dev .
